@@ -24,11 +24,15 @@ libraryDependencies +=  "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
+libraryDependencies += "org.scalameta" % "scalameta_2.11" % "0.1.0-SNAPSHOT"
+
 libraryDependencies ++= Seq(
   "org.codehaus.plexus" % "plexus-container-default" % "1.5.5" % Compile,
   "org.sonatype.sisu" % "sisu-inject-plexus" % "2.2.3" % Compile,
   "org.apache.maven.wagon" % "wagon-http" % "2.6" % Compile
 )
+
+resolvers in ThisBuild += Resolver.sonatypeRepo("snapshots")
 
 lazy val testDownloader = project.in(file("testJarsDownloader"))
 
