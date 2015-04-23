@@ -26,6 +26,8 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
 libraryDependencies += "org.scalameta" % "scalameta_2.11" % "0.1.0-SNAPSHOT"
 
+libraryDependencies += "org.scalameta" %% "interpreter" % "0.1.0-SNAPSHOT"
+
 libraryDependencies ++= Seq(
   "org.codehaus.plexus" % "plexus-container-default" % "1.5.5" % Compile,
   "org.sonatype.sisu" % "sisu-inject-plexus" % "2.2.3" % Compile,
@@ -235,7 +237,10 @@ packageStructure in Compile := {
     libOf("org.apache.httpcomponents" % "httpclient" % "4.3.1"),
     libOf("org.apache.httpcomponents" % "httpcore" % "4.3"),
     libOf("commons-logging" % "commons-logging" % "1.1.3"),
-    libOf("commons-codec" % "commons-codec" % "1.6")
+    libOf("commons-codec" % "commons-codec" % "1.6"),
+    libOf("org.scalameta" % "scalameta_2.11" % "0.1.0-SNAPSHOT"),
+    libOf("org.scalameta" % "scalameta-foundation_2.11" % "0.1.0-SNAPSHOT"),
+    libOf("org.scalameta" %% "interpreter" % "0.1.0-SNAPSHOT")
   )
 }
 
