@@ -24,9 +24,9 @@ libraryDependencies +=  "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
-libraryDependencies += "org.scalameta" % "scalameta_2.11" % "0.1.0-SNAPSHOT"
+libraryDependencies += "org.scalameta" % "scalameta_2.11" % "0.1.0-SNAPSHOT" withSources()
 
-libraryDependencies += "org.scalameta" %% "interpreter" % "0.1.0-SNAPSHOT"
+libraryDependencies += "org.scalameta" %% "interpreter" % "0.1.0-SNAPSHOT" withSources()
 
 libraryDependencies ++= Seq(
   "org.codehaus.plexus" % "plexus-container-default" % "1.5.5" % Compile,
