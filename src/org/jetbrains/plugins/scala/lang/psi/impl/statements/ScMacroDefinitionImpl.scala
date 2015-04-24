@@ -5,15 +5,22 @@ import com.intellij.lang.ASTNode
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.psi._
 import com.intellij.psi.scope._
+import org.jetbrains.plugins.scala.lang.psi.ScalaPsiElement
 import org.jetbrains.plugins.scala.lang.psi.api.ScalaElementVisitor
 import org.jetbrains.plugins.scala.lang.psi.api.base.types.ScTypeElement
 import org.jetbrains.plugins.scala.lang.psi.api.expr._
 import org.jetbrains.plugins.scala.lang.psi.api.statements._
-import org.jetbrains.plugins.scala.lang.psi.api.statements.params.ScParameter
+import org.jetbrains.plugins.scala.lang.psi.api.statements.params.{ScArguments, ScParameter}
 import org.jetbrains.plugins.scala.lang.psi.impl.ScalaPsiElementFactory
 import org.jetbrains.plugins.scala.lang.psi.stubs.ScFunctionStub
 import org.jetbrains.plugins.scala.lang.psi.types.{Any, ScType}
 import org.jetbrains.plugins.scala.lang.psi.types.result.{Success, TypeResult, TypingContext}
+import org.jetbrains.plugins.scala.meta.trees.ConverterImpl
+
+import scala.meta.Term
+import scala.meta.dialects.Scala211
+import scala.meta.internal.{ast => m}
+import scala.meta.eval._
 
 /**
  * @author Jason Zaugg
@@ -69,7 +76,7 @@ class ScMacroDefinitionImpl extends ScFunctionImpl with ScMacroDefinition {
     case Some(rte: ScTypeElement) => rte.getType(TypingContext.empty)
   }
 
-  def body: Option[ScExpression] = {
+  override def body: Option[ScExpression] = {
     val stub = getStub
     if (stub != null) stub.asInstanceOf[ScFunctionStub].getBodyExpression else findChild(classOf[ScExpression])
   }
@@ -96,5 +103,24 @@ class ScMacroDefinitionImpl extends ScFunctionImpl with ScMacroDefinition {
       case s: ScalaElementVisitor => s.visitMacroDefinition(this)
       case _ => super.accept(visitor)
     }
+  }
+
+  override def expand(args: Seq[ScExpression]): ScalaPsiElement = {
+    implicit val context = new org.jetbrains.plugins.scala.meta.semantic.Context
+    val macroBody = ConverterImpl.ideaToMeta(body.get)
+    val macroArgs = args.toStream.map(ConverterImpl.ideaToMeta)
+    val macroApplication = m.Term.Apply(m.Term.Name(s"macro_$name"), macroArgs.asInstanceOf[scala.collection.immutable.Seq[m.Term]])
+    val mMacroEnv = scala.collection.mutable.Map[m.Term.Name, Any]()
+    try {
+      val result = macroApplication.eval(mMacroEnv.toMap)
+    } catch {
+      case ex: Exception =>
+        val v = ex.getMessage
+        ""
+      case ex: Throwable =>
+        val v = ex.getMessage
+        ""
+    }
+    this
   }
 }
