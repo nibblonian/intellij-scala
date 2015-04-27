@@ -106,21 +106,21 @@ class ScMacroDefinitionImpl extends ScFunctionImpl with ScMacroDefinition {
   }
 
   override def expand(args: Seq[ScExpression]): ScalaPsiElement = {
-    implicit val context = new org.jetbrains.plugins.scala.meta.semantic.Context
-    val macroBody = ConverterImpl.ideaToMeta(body.get)
-    val macroArgs = args.toStream.map(ConverterImpl.ideaToMeta)
-    val macroApplication = m.Term.Apply(m.Term.Name(s"macro_$name"), macroArgs.asInstanceOf[scala.collection.immutable.Seq[m.Term]])
-    val mMacroEnv = scala.collection.mutable.Map[m.Term.Name, Any]()
-    try {
-      val result = macroApplication.eval(mMacroEnv.toMap)
-    } catch {
-      case ex: Exception =>
-        val v = ex.getMessage
-        ""
-      case ex: Throwable =>
-        val v = ex.getMessage
-        ""
-    }
+//    implicit val context = new org.jetbrains.plugins.scala.meta.semantic.Context
+//    val macroBody = ConverterImpl.ideaToMeta(body.get)
+//    val macroArgs = args.toStream.map(ConverterImpl.ideaToMeta)
+//    val macroApplication = m.Term.Apply(m.Term.Name(s"macro_$name"), macroArgs.asInstanceOf[scala.collection.immutable.Seq[m.Term]])
+//    val mMacroEnv = scala.collection.mutable.Map[m.Term.Name, Any]()
+//    try {
+//      val result = macroApplication.eval(mMacroEnv.toMap)
+//    } catch {
+//      case ex: Exception =>
+//        val v = ex.getMessage
+//        ""
+//      case ex: Throwable =>
+//        val v = ex.getMessage
+//        ""
+//    }
     this
   }
 }
